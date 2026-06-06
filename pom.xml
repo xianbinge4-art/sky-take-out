@@ -39,6 +39,13 @@
                 <version>${mybatis.spring}</version>
             </dependency>
 
+            <!-- bcrypt加密版本统一管理 -->
+            <dependency>
+                <groupId>org.mindrot</groupId>
+                <artifactId>jbcrypt</artifactId>
+                <version>0.4</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>

@@ -2,4 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.EmployeeMapper">
+    <select id="list" resultType="com.sky.entity.Employee">
+        select id,name,username,phone,status,create_time,update_time,create_user,update_user
+        from employee
+        <where>
+            <if test="dto.name != null">name like concat('%',#{dto.name},'%')</if>
+        </where>
+        order by create_time desc
+    </select>
 </mapper>
