@@ -74,15 +74,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     public  void save(EmployeeDTO employeeDTO) {
         Employee employee=new Employee();
         BeanUtils.copyProperties(employeeDTO,employee);
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+        /*employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());*/
         employee.setStatus(StatusConstant.ENABLE);
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
 
         //当前操作者的信息未知;
         //TODO
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+        /*employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());*/
         employeeMapper.saveEmp(employee);
     }
 
@@ -93,6 +93,29 @@ public class EmployeeServiceImpl implements EmployeeService {
         PageInfo<Employee> pageInfo = new PageInfo<>(empList);
         PageResult pageResult = new PageResult(pageInfo.getTotal(),pageInfo.getList());
         return pageResult;
+    }
+
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        Employee employee=Employee.builder().status(status).id(id).updateTime(LocalDateTime.now()).build();
+        employeeMapper.startOrStop(employee);
+
+    }
+
+    @Override
+    public Employee findById(Long id) {
+        return employeeMapper.findById(id);
+    }
+
+    @Override
+    public void update(EmployeeDTO employeeDTO) {
+       Employee employee=employeeMapper.findById(employeeDTO.getId());
+       BeanUtils.copyProperties(employeeDTO,employee);
+      /* employee.setUpdateTime(LocalDateTime.now());
+       employee.setUpdateUser(BaseContext.getCurrentId());*/
+       employeeMapper.update(employee);
+
+
     }
 
 }
