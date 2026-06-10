@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 import com.sky.annotation.AutoFill;
+import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.enumeration.OperationType;
 import org.apache.ibatis.annotations.Delete;
@@ -24,4 +25,6 @@ public interface CategoryMapper {
 
     @AutoFill(OperationType.UPDATE)
     void update(Category category);
+
+    List<Category>  page(CategoryPageQueryDTO categoryPageQueryDTO);
 }

@@ -1,8 +1,11 @@
 package com.sky.controller.admin;
 
-import com.sky.annotation.AutoFill;
+
+import com.github.pagehelper.PageInfo;
 import com.sky.dto.CategoryDTO;
+import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.CategoryService;
 import io.swagger.annotations.Api;
@@ -20,11 +23,27 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+
+
+
     @ApiOperation("根据类型查询分类")
    @GetMapping("/list")
     public Result<List<Category>> list(Integer type){
      List<Category>  list= categoryService.list(type);
      return  Result.success(list);
+    }
+
+
+
+    @GetMapping("/page")
+    @ApiOperation("分页查询相关代码")
+    public Result<PageResult> page(CategoryPageQueryDTO categoryPageQueryDTO){
+        PageResult pageResult=categoryService.page(categoryPageQueryDTO);
+        return  Result.success(pageResult);
+
+
+
+
     }
 
 

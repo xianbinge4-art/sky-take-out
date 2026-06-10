@@ -1,9 +1,13 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.CategoryDTO;
+import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.mapper.CategoryMapper;
+import com.sky.result.PageResult;
 import com.sky.service.CategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +53,14 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = new Category();
         BeanUtils.copyProperties(categoryDTO, category);
         categoryMapper.update(category);
+    }
+
+    @Override
+    public PageResult page(CategoryPageQueryDTO categoryPageQueryDTO) {
+        PageHelper.startPage(categoryPageQueryDTO.getPage(),categoryPageQueryDTO.getPageSize());
+        List<Category> empList=categoryMapper.page(categoryPageQueryDTO);
+        PageInfo <Category> pageInfo = new PageInfo<>(empList);
+        PageResult pageResult = new PageResult(pageInfo.getTotal(),pageInfo.getList());
+        return pageResult;
     }
 }
