@@ -16,12 +16,14 @@ import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -82,6 +84,40 @@ public class DishServiceImpl implements DishService {
         //如果没有关联就删除菜品和口味
         dishMapper.delete(ids);
         dishFlavorMapper.delete(ids);
+
+
+    }
+
+    @Override
+    public DishVO getById(Integer id) {
+        Dish dish = dishMapper.getById(id);
+        if (dish == null) {
+            throw new IllegalArgumentException("没有查询到对应的菜品");
+        }
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish, dishVO);
+        List<DishFlavor> flavors = dishFlavorMapper.getByDishId(id);
+        dishVO.setFlavors(flavors);
+        return dishVO;
+    }
+
+    @Override
+    @Transactional
+    public void update(DishDTO dishDTO) {
+       Dish dish=dishMapper.getById( dishDTO.getId().intValue());
+         if(dish==null){
+              throw new IllegalArgumentException("没有查询到对应的菜品");
+         }
+          BeanUtils.copyProperties(dishDTO, dish);
+        dishFlavorMapper.delete(List.of(dishDTO.getId().intValue()));
+         List<DishFlavor> flavors = dishDTO.getFlavors();
+         if (flavors != null && !flavors.isEmpty()) {
+             for (DishFlavor flavor : flavors) {
+                 flavor.setDishId(dish.getId());
+             }
+         }
+         dishFlavorMapper.insertBatch(flavors);
+         dishMapper.update(dish);
 
 
     }

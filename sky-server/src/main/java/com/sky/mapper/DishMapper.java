@@ -24,5 +24,7 @@ public interface DishMapper {
 
     @Select("SELECT * FROM dish WHERE id IN (#{id})")
     Dish getById(Integer id);
+@AutoFill(value = OperationType.UPDATE)
+    void update(Dish dish);
 }
 
