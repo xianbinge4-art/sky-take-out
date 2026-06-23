@@ -39,6 +39,12 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employeeLoginDTO
      * @return
      */
+    /**
+     * 校验员工账号密码并返回员工信息。
+     *
+     * @param employeeLoginDTO 员工登录数据
+     * @return 员工信息
+     */
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
         String password = employeeLoginDTO.getPassword();
@@ -71,6 +77,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    /**
+     * 新增员工并设置默认密码和初始状态。
+     *
+     * @param employeeDTO 员工提交数据
+     */
     public  void save(EmployeeDTO employeeDTO) {
         Employee employee=new Employee();
         BeanUtils.copyProperties(employeeDTO,employee);
@@ -87,6 +98,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    /**
+     * 分页查询员工列表。
+     *
+     * @param employeePageQueryDTO 员工分页查询条件
+     * @return 员工分页结果
+     */
     public PageResult page(EmployeePageQueryDTO employeePageQueryDTO) {
         PageHelper.startPage(employeePageQueryDTO.getPage(),employeePageQueryDTO.getPageSize());
         List<Employee> empList=employeeMapper.list(employeePageQueryDTO);
@@ -96,6 +113,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    /**
+     * 修改员工账号状态。
+     *
+     * @param status 目标状态
+     * @param id 员工 id
+     */
     public void startOrStop(Integer status, Long id) {
         Employee employee=Employee.builder().status(status).id(id).updateTime(LocalDateTime.now()).build();
         employeeMapper.startOrStop(employee);
@@ -103,11 +126,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    /**
+     * 根据 id 查询员工信息。
+     *
+     * @param id 员工 id
+     * @return 员工信息
+     */
     public Employee findById(Long id) {
         return employeeMapper.findById(id);
     }
 
     @Override
+    /**
+     * 根据提交数据修改员工信息。
+     *
+     * @param employeeDTO 员工修改数据
+     */
     public void update(EmployeeDTO employeeDTO) {
        Employee employee=employeeMapper.findById(employeeDTO.getId());
        BeanUtils.copyProperties(employeeDTO,employee);

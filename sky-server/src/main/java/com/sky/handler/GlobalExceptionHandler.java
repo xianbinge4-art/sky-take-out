@@ -28,6 +28,12 @@ public class GlobalExceptionHandler {
         return Result.error(ex.getMessage());
     }
 
+    /**
+     * 捕获数据库唯一约束异常并返回友好的错误信息。
+     *
+     * @param ex SQL 唯一约束异常
+     * @return 错误结果
+     */
     @ExceptionHandler
      public Result exceptionHandler(SQLIntegrityConstraintViolationException ex){
 

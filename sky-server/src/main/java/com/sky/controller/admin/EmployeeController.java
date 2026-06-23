@@ -89,6 +89,12 @@ public class EmployeeController {
 
 @ApiOperation("新增员工")
     @PostMapping()
+    /**
+     * 新增员工账号。
+     *
+     * @param employeeDTO 员工提交数据
+     * @return 通用成功结果
+     */
     public Result save(@RequestBody EmployeeDTO employeeDTO) {
     log.info("员工的信息{}", employeeDTO);
     employeeService.save(employeeDTO);
@@ -96,6 +102,12 @@ public class EmployeeController {
     }
    @ApiOperation("员工分页查询")
    @GetMapping("/page")
+        /**
+         * 分页查询员工列表。
+         *
+         * @param employeePageQueryDTO 员工分页查询条件
+         * @return 员工分页结果
+         */
         public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO) {
         PageResult pageResult = employeeService.page(employeePageQueryDTO);
         return Result.success(pageResult);
@@ -103,6 +115,13 @@ public class EmployeeController {
 
 @PostMapping("/status/{status}")
 @ApiOperation("启用禁用员工账号")
+    /**
+     * 启用或禁用员工账号。
+     *
+     * @param status 目标状态
+     * @param id 员工 id
+     * @return 通用成功结果
+     */
     public  Result startOrStop(@PathVariable Integer status ,Long id){
         log.info("启用禁用员工账号的状态为,{},员工id是{}",status,id);
         employeeService.startOrStop(status,id);
@@ -110,6 +129,12 @@ public class EmployeeController {
     }
     @GetMapping("{id}")
     @ApiOperation("根据id查询员工信息")
+    /**
+     * 根据 id 查询员工信息。
+     *
+     * @param id 员工 id
+     * @return 员工信息
+     */
     public Result<Employee> getById(@PathVariable Long id){
         log.info("要查询的员工的id是{}",id);
         Employee employee=employeeService.findById(id);
@@ -119,6 +144,12 @@ public class EmployeeController {
 
     @PutMapping()
     @ApiOperation("根据id修改员工")
+    /**
+     * 修改员工信息。
+     *
+     * @param employeeDTO 员工修改数据
+     * @return 通用成功结果
+     */
     public Result update(@RequestBody EmployeeDTO employeeDTO){
     log.info("需要修改的员工的id是{}",employeeDTO.getId());
         employeeService.update(employeeDTO);

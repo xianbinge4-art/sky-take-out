@@ -31,6 +31,12 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    /**
+     * 根据微信授权码完成用户登录，首次登录时自动创建用户。
+     *
+     * @param userLoginDTO 用户登录数据
+     * @return 用户信息
+     */
     public User login(UserLoginDTO userLoginDTO) {
         Map<String, String> map = new HashMap<>();;
        map.put("appid", weChatProperties.getAppid());

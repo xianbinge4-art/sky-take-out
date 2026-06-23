@@ -11,6 +11,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Slf4j
 public class OssConfiguration {
+
+    /**
+     * 创建阿里云 OSS 上传工具对象。
+     *
+     * @param aliOssProperties OSS 配置属性
+     * @return OSS 上传工具对象
+     */
     @Bean
     @ConditionalOnMissingBean
     public AliOssUtil aliOssUtil(AliOssProperties  aliOssProperties){

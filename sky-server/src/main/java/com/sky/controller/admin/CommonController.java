@@ -27,6 +27,13 @@ public class CommonController {
 
 @PostMapping("/upload")
     @ApiOperation("文件上传接口")
+    /**
+     * 上传文件到对象存储。
+     *
+     * @param file 上传的文件
+     * @return 文件访问地址
+     * @throws IOException 文件读取失败时抛出
+     */
     public Result<String> upload(MultipartFile file) throws IOException {
         log.info("文件上传:{}",file.getOriginalFilename());
         String fileName = file.getOriginalFilename();

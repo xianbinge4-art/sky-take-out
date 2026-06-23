@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +37,11 @@ public class DishServiceImpl implements DishService {
     @Autowired
     private SetmealDishMapper setmealDishMapper;
 
+    /**
+     * 新增菜品并批量保存菜品口味。
+     *
+     * @param dishDTO 菜品提交数据
+     */
     @Override
     @Transactional
     public void saveWithFlavor(DishDTO dishDTO) {
@@ -52,6 +58,12 @@ public class DishServiceImpl implements DishService {
 
     }
 
+    /**
+     * 根据查询条件分页查询菜品列表。
+     *
+     * @param dishPageQueryDTO 菜品分页查询条件
+     * @return 菜品分页结果
+     */
     @Override
     public PageResult page(DishPageQueryDTO dishPageQueryDTO) {
         PageHelper.startPage(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
@@ -61,6 +73,11 @@ public class DishServiceImpl implements DishService {
         return pageResult;
     }
 
+    /**
+     * 批量删除菜品，删除前校验售卖状态和套餐关联关系。
+     *
+     * @param ids 待删除的菜品 id 集合
+     */
     @Override
     @Transactional
     public void delete(List<Integer> ids) {
@@ -88,6 +105,12 @@ public class DishServiceImpl implements DishService {
 
     }
 
+    /**
+     * 查询菜品详情并组装口味列表。
+     *
+     * @param id 菜品 id
+     * @return 菜品详情
+     */
     @Override
     public DishVO getById(Integer id) {
         Dish dish = dishMapper.getById(id);
@@ -101,6 +124,11 @@ public class DishServiceImpl implements DishService {
         return dishVO;
     }
 
+    /**
+     * 修改菜品基础信息并重建口味列表。
+     *
+     * @param dishDTO 菜品修改数据
+     */
     @Override
     @Transactional
     public void update(DishDTO dishDTO) {
@@ -120,5 +148,20 @@ public class DishServiceImpl implements DishService {
          dishMapper.update(dish);
 
 
+    }
+
+    @Override
+    public List<DishVO> getByCategoryId(Integer categoryId) {
+
+      List<Dish> dish=dishMapper.getByCategoryId(categoryId);
+      List<DishVO> dishVOS=new ArrayList<>();
+      for (Dish dish1 : dish) {
+          DishVO dishVO = new DishVO();
+          BeanUtils.copyProperties(dish1, dishVO);
+          List<DishFlavor> list=dishFlavorMapper.getByDishId(dish1.getId().intValue());
+          dishVO.setFlavors(list);
+          dishVOS.add(dishVO);
+      }
+      return dishVOS;
     }
 }

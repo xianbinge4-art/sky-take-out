@@ -47,6 +47,11 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
      * 通过knife4j生成接口文档
      * @return
      */
+    /**
+     * 创建用户端接口文档分组。
+     *
+     * @return 用户端 Knife4j 文档配置
+     */
     @Bean
     public Docket docket1() {
         ApiInfo apiInfo = new ApiInfoBuilder()
@@ -63,6 +68,12 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .build();
         return docket;
     }
+
+    /**
+     * 创建管理端接口文档分组。
+     *
+     * @return 管理端 Knife4j 文档配置
+     */
     @Bean
     public Docket docket2() {
         ApiInfo apiInfo = new ApiInfoBuilder()

@@ -62,6 +62,15 @@ public class JwtTokenUserInterceptor implements HandlerInterceptor {
 
 
 
+    /**
+     * 请求完成后清理当前线程保存的用户 id。
+     *
+     * @param request 请求对象
+     * @param response 响应对象
+     * @param handler 处理器对象
+     * @param ex 异常对象
+     * @throws Exception 清理过程异常
+     */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         // 请求全部走完，清空ThreadLocal存储的ID

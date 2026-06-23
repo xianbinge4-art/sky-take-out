@@ -33,6 +33,12 @@ public class UserController {
 
     @ApiOperation(value = "登录接口")
     @PostMapping("/login")
+    /**
+     * 用户登录并生成用户端 JWT。
+     *
+     * @param userLoginDTO 用户登录数据
+     * @return 用户登录结果
+     */
     public Result<UserLoginVO> login( @RequestBody UserLoginDTO userLoginDTO) {
         //TODO 用户登录
         log.info("用户登录，参数：{}", userLoginDTO);

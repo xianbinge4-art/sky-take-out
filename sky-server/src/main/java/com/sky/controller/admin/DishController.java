@@ -26,6 +26,12 @@ public class DishController {
 
     @ApiOperation("新增菜品")
     @PostMapping
+     /**
+      * 新增菜品及其口味信息。
+      *
+      * @param dishDTO 菜品提交数据
+      * @return 通用成功结果
+      */
      public Result save( @RequestBody DishDTO dishDTO){
          log.info("新增菜品的信息是:{}", dishDTO);
          dishService.saveWithFlavor(dishDTO);
@@ -33,6 +39,12 @@ public class DishController {
      }
      @GetMapping("/page")
      @ApiOperation("菜品分页查询")
+    /**
+     * 分页查询菜品列表。
+     *
+     * @param dishPageQueryDTO 菜品分页查询条件
+     * @return 菜品分页结果
+     */
     public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO){
             log.info("菜品分页查询的参数是:{}", dishPageQueryDTO);
          PageResult pageResult=dishService.page(dishPageQueryDTO);
@@ -40,6 +52,12 @@ public class DishController {
      }
      @ApiOperation("菜品删除")
     @DeleteMapping
+     /**
+      * 根据菜品 id 批量删除菜品。
+      *
+      * @param ids 待删除的菜品 id 集合
+      * @return 通用成功结果
+      */
      public Result delete( @RequestParam("ids") List<Integer> ids){
          log.info("删除菜单的id是:{}", ids);
          dishService.delete(ids);
@@ -49,6 +67,12 @@ public class DishController {
 
      @ApiOperation("菜品修改")
     @PutMapping
+     /**
+      * 修改菜品及其口味信息。
+      *
+      * @param dishDTO 菜品修改数据
+      * @return 通用成功结果
+      */
      public Result update(@RequestBody DishDTO dishDTO){
         dishService.update(dishDTO);
           return Result.success();
@@ -59,6 +83,12 @@ public class DishController {
 
     @ApiOperation("根据菜品id查询菜品")
     @GetMapping("{id}")
+     /**
+      * 根据菜品 id 查询菜品详情。
+      *
+      * @param id 菜品 id
+      * @return 菜品详情
+      */
      public Result<DishVO> getById(@PathVariable Integer id){
          log.info("根据id查询菜品，id是:{}", id);
          DishVO dish=dishService.getById(id);
@@ -66,16 +96,16 @@ public class DishController {
      }
 
 
-    /*@ApiOperation("根据分类id查询")
+    @ApiOperation("根据分类id查询")
     @GetMapping("/list")
-    public Result<DishVO> getByCategoryId(@RequestParam("categoryId") Integer categoryId){
+    public Result<List<DishVO>> getByCategoryId(@RequestParam("categoryId") Integer categoryId){
         log.info("根据分类id查询菜品，id是:{}", categoryId);
         List<DishVO> dish=dishService.getByCategoryId(categoryId);
         return Result.success(dish);
 
 
 
-    } */
+    }
 
 
 

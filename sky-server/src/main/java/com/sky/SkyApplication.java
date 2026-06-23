@@ -9,6 +9,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement //开启注解方式的事务管理
 @Slf4j
 public class SkyApplication {
+
+    /**
+     * 启动后端服务。
+     *
+     * @param args 启动参数
+     */
     public static void main(String[] args) {
         SpringApplication.run(SkyApplication.class, args);
         log.info("server started");

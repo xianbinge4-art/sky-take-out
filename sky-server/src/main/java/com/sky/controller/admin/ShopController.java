@@ -20,6 +20,12 @@ public class ShopController {
 
     @PutMapping("/{status}")
     @ApiOperation(value = "设置店铺营业状态接口")
+    /**
+     * 设置店铺营业状态。
+     *
+     * @param status 店铺状态
+     * @return 通用成功结果
+     */
     public Result setStatus(@PathVariable("status") Integer status) {
         log.info("修改店铺营业状态:{}", status==1?"营业中":"打烊中");
         redisTemplate.opsForValue().set("SHOP_STATUS", status);
@@ -28,6 +34,11 @@ public class ShopController {
 
     @ApiOperation(value = "查询店铺营业状态接口")
     @GetMapping("/status")
+    /**
+     * 查询店铺营业状态。
+     *
+     * @return 店铺状态
+     */
     public Result<Integer> getShop() {
         Integer status = (Integer) redisTemplate.opsForValue().get("SHOP_STATUS");
         log.info("查询店铺营业状态:{}", status==1?"营业中":"打烊中");

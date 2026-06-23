@@ -5,8 +5,16 @@ package com.sky.exception;
  */
 public class SetmealEnableFailedException extends BaseException {
 
+    /**
+     * 创建无错误信息的套餐启售失败异常。
+     */
     public SetmealEnableFailedException(){}
 
+    /**
+     * 创建携带错误信息的套餐启售失败异常。
+     *
+     * @param msg 错误信息
+     */
     public SetmealEnableFailedException(String msg){
         super(msg);
     }

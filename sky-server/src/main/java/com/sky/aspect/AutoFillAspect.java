@@ -20,10 +20,18 @@ import java.time.LocalDateTime;
 @Slf4j
 public class AutoFillAspect {
 
+    /**
+     * 定义自动填充公共字段的切入点。
+     */
     @Pointcut("execution(* com.sky.mapper.*.*(..)) && @annotation(com.sky.annotation.AutoFill)")
     public void autoFillPointCut() {
     }
 
+    /**
+     * 在 Mapper 方法执行前，根据操作类型自动填充创建人、创建时间、修改人和修改时间。
+     *
+     * @param joinPoint 连接点对象
+     */
     @Before("autoFillPointCut()")
     public void autoFill(JoinPoint joinPoint) {
         log.info("start auto fill common fields");

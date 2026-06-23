@@ -10,6 +10,13 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 @Slf4j
 public class RedisConfiguration {
+
+    /**
+     * 创建 RedisTemplate 并配置 key 序列化方式。
+     *
+     * @param redisConnectionFactory Redis 连接工厂
+     * @return RedisTemplate 实例
+     */
     @Bean
     public RedisTemplate  redisTemplate(RedisConnectionFactory redisConnectionFactory){
           RedisTemplate  redisTemplate = new RedisTemplate();
