@@ -33,6 +33,14 @@ public interface DishMapper {
     List<DishVO> page(DishPageQueryDTO dishPageQueryDTO);
 
     /**
+     * 根据条件查询菜品。
+     *
+     * @param dish 菜品查询条件
+     * @return 菜品列表
+     */
+    List<Dish> list(Dish dish);
+
+    /**
      * 根据 id 集合批量删除菜品。
      *
      * @param ids 菜品 id 集合
@@ -58,4 +66,3 @@ public interface DishMapper {
    @Select("SELECT * FROM dish WHERE category_id = #{categoryId} AND status = 1")
     List<Dish> getByCategoryId(Integer categoryId);
 }
-
