@@ -12,9 +12,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/admin/dish")
@@ -23,6 +25,8 @@ import java.util.List;
 public class DishController {
     @Autowired
     private DishService dishService;
+    @Autowired
+    private RedisTemplate  redisTemplate;
 
     @ApiOperation("新增菜品")
     @PostMapping
@@ -35,6 +39,9 @@ public class DishController {
      public Result save( @RequestBody DishDTO dishDTO){
          log.info("新增菜品的信息是:{}", dishDTO);
          dishService.saveWithFlavor(dishDTO);
+         String key="dish_"+dishDTO.getCategoryId();
+         clearCache(key);
+
          return Result.success();
      }
      @GetMapping("/page")
@@ -61,6 +68,7 @@ public class DishController {
      public Result delete( @RequestParam("ids") List<Integer> ids){
          log.info("删除菜单的id是:{}", ids);
          dishService.delete(ids);
+         clearCache("dish_*");
          return Result.success();
      }
 
@@ -75,6 +83,9 @@ public class DishController {
       */
      public Result update(@RequestBody DishDTO dishDTO){
         dishService.update(dishDTO);
+
+
+         clearCache("dish_*");
           return Result.success();
 
 
@@ -107,8 +118,26 @@ public class DishController {
 
     }
 
+    @PostMapping("/status/{status}")
+    @ApiOperation("根据id启用或者禁用菜品状态")
+    /**
+     * 启用或禁用菜品。
+     *
+     * @param status 目标状态
+     * @param ids 菜品 id 集合
+     * @return 通用成功结果
+     */
+    public Result status(@PathVariable("status") Integer status,long id) {
+        log.info("操作的菜品的id是{}", id);
+        dishService.startOrStop(status, id);
+        clearCache("dish_*");
+        return Result.success();
+    }
 
 
+    private void clearCache(String pattern) {
+        Set keys = redisTemplate.keys(pattern );
+        redisTemplate.delete( keys );
 
-
+    }
 }

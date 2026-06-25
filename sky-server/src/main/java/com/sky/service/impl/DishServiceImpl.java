@@ -190,4 +190,18 @@ public class DishServiceImpl implements DishService {
 
         return dishVOList;
     }
+
+    @Override
+    public void startOrStop(Integer status, long id) {
+
+        Dish dish = dishMapper.getById((int) id);
+        if (dish == null) {
+            throw new IllegalArgumentException("没有查询到对应的菜品");
+        }
+        dish.setStatus(status);
+        dishMapper.update(dish);
+
+
+
+    }
 }

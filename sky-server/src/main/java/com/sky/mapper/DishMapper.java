@@ -63,6 +63,8 @@ public interface DishMapper {
      */
 @AutoFill(value = OperationType.UPDATE)
     void update(Dish dish);
+
+
    @Select("SELECT * FROM dish WHERE category_id = #{categoryId} AND status = 1")
     List<Dish> getByCategoryId(Integer categoryId);
 }
