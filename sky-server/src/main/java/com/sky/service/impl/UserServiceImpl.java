@@ -45,6 +45,7 @@ public class UserServiceImpl implements UserService {
        map.put("grant_type", "authorization_code");
 
        String json= HttpClientUtil.doGet(WX_LOGIN,map);
+       log.info("微信登录返回结果：{}", json);
         String openid=JSON.parseObject(json).getString("openid");
         if(openid==null){
             throw new LoginFailedException(MessageConstant.LOGIN_FAILED);
