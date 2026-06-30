@@ -31,4 +31,18 @@ public interface OrderMapper {
     void update(Orders orders);
 
     List<OrderVO> list(OrdersPageQueryDTO ordersPageQueryDTO);
+
+    OrderVO getById(Long id);
+
+    /**
+     * 根据订单id查询订单实体
+     * @param id
+     * @return
+     */
+    @Select("select * from orders where id = #{id}")
+    Orders getEntityById(Long id);
+
+    List<OrderVO> conditionSearch(OrdersPageQueryDTO ordersPageQueryDTO);
+
+    Integer countByStatus(Integer status);
 }

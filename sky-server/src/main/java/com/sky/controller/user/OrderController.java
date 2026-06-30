@@ -8,6 +8,7 @@ import com.sky.result.Result;
 import com.sky.service.OrderService;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
+import com.sky.vo.OrderVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController("userOrderController")
 @RequestMapping("/user/order")
 @Slf4j
-@Api(tags = "订单相关接口")
+@Api(tags = "c端-订单相关接口")
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -27,7 +28,7 @@ public class OrderController {
     @ApiOperation(value = "用户下单")
     public Result<OrderSubmitVO> submit(@RequestBody OrdersSubmitDTO ordersSubmitDTO) {
         log.info("用户下单: {}", ordersSubmitDTO);
-       OrderSubmitVO orderSubmitVO =orderService.submit(ordersSubmitDTO);
+        OrderSubmitVO orderSubmitVO = orderService.submit(ordersSubmitDTO);
         return Result.success(orderSubmitVO);
 
     }
@@ -50,15 +51,39 @@ public class OrderController {
 
 
     /*查询历史订单
-    * */
+     * */
 
     @GetMapping("/historyOrders")
     @ApiOperation(value = "历史订单查询")
-    public Result<PageResult> historyOrders( OrdersPageQueryDTO  ordersPageQueryDTO) {
+    public Result<PageResult> historyOrders(OrdersPageQueryDTO ordersPageQueryDTO) {
 
         PageResult pageResult = orderService.historyOrders(ordersPageQueryDTO);
         return Result.success(pageResult);
     }
 
 
+    @GetMapping("/orderDetail/{id}")
+    @ApiOperation(value = "订单详情查询")
+    public Result<OrderVO> orderDetail(@PathVariable Long id) {
+        OrderVO orderVO = orderService.orderDetail(id);
+        return Result.success(orderVO);
+    }
+
+
+    @PutMapping("/cancel/{id}")
+    @ApiOperation(value = "取消订单")
+    public Result cancel(@PathVariable Long id) {
+        log.info("取消订单: {}", id);
+        orderService.cancelById(id);
+        return Result.success();
+    }
+
+
+    @PostMapping("/repetition/{id}")
+    @ApiOperation(value = "重复下单")
+    public Result repetition(@PathVariable Long id) {
+        log.info("重复下单: {}", id);
+        orderService.repetition(id);
+        return Result.success();
+    }
 }
