@@ -81,6 +81,9 @@ public class WeChatPayUtil {
      */
     private String post(String url, String body) throws Exception {
         CloseableHttpClient httpClient = getClient();
+        if (httpClient == null) {
+            throw new Exception("微信支付客户端初始化失败：请检查证书文件路径（privateKeyFilePath / weChatPayCertFilePath）是否配置正确、证书文件是否存在");
+        }
 
         HttpPost httpPost = new HttpPost(url);
         httpPost.addHeader(HttpHeaders.ACCEPT, ContentType.APPLICATION_JSON.toString());
@@ -106,6 +109,9 @@ public class WeChatPayUtil {
      */
     private String get(String url) throws Exception {
         CloseableHttpClient httpClient = getClient();
+        if (httpClient == null) {
+            throw new Exception("微信支付客户端初始化失败：请检查证书文件路径（privateKeyFilePath / weChatPayCertFilePath）是否配置正确、证书文件是否存在");
+        }
 
         HttpGet httpGet = new HttpGet(url);
         httpGet.addHeader(HttpHeaders.ACCEPT, ContentType.APPLICATION_JSON.toString());

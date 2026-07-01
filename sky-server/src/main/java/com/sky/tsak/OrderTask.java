@@ -19,6 +19,10 @@ public class OrderTask {
 
 
     //每分钟执行一次
+    //查询待付款订单
+    //超时未付款订单
+    //更新订单状态为已取消
+    //设置取消原因为超时未付款
     @Scheduled(cron = "0 * * * * *")
     public void processTimeOutOrder() {
         log.info("定时处理超时订单,{}", LocalDateTime.now());
@@ -41,6 +45,10 @@ public class OrderTask {
     }
 
     //每天凌晨一点执行一次
+    //查询派送中的订单
+    //超时未派送订单
+    //更新订单状态为已完成
+    //设置派送时间当前时间
     @Scheduled(cron = "0 1 1 * * ?")
     public void processTimeoutDelivery() {
         log.info("定时处理超时派送订单,{}", LocalDateTime.now());
