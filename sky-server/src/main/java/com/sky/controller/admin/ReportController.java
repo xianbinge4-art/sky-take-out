@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -79,6 +80,15 @@ public class ReportController {
         SalesTop10ReportVO salesTop10ReportVO = reportService.salesTop10Report(begin, end);
         return Result.success(salesTop10ReportVO);
     }
+    @GetMapping("/export")
+    @ApiOperation(value = "导出订单报表")
+    public void export(HttpServletResponse response){
+        reportService.export(response);
+
+
+
+    }
+
 
 
 }
