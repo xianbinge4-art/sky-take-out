@@ -27,9 +27,9 @@ public class OrderTask {
     public void processTimeOutOrder() {
         log.info("定时处理超时订单,{}", LocalDateTime.now());
         //查询待付款订单
-        LocalDateTime time = LocalDateTime.now().plusDays(-15);
+        LocalDateTime time = LocalDateTime.now().plusMinutes(-15);
         List<Orders> orders = orderMapper.getByStatusAndOrderTime(Orders.PENDING_PAYMENT, time);
-        if (orders.size() > 0 && orders != null) {
+        if (orders != null && !orders.isEmpty()) {
             //更新订单状态为已取消
             orders.forEach(order -> {
                 order.setStatus(Orders.CANCELLED);
@@ -52,9 +52,9 @@ public class OrderTask {
     @Scheduled(cron = "0 1 1 * * ?")
     public void processTimeoutDelivery() {
         log.info("定时处理超时派送订单,{}", LocalDateTime.now());
-        LocalDateTime time = LocalDateTime.now().plusDays(-60);
+        LocalDateTime time = LocalDateTime.now().plusMinutes(-60);
         List<Orders> orders = orderMapper.getByStatusAndOrderTime(Orders.DELIVERY_IN_PROGRESS, time);
-        if (orders.size() > 0 && orders != null) {
+        if (orders != null && !orders.isEmpty()) {
             //更新订单状态为已完成
             orders.forEach(order -> {
                 order.setStatus(Orders.COMPLETED);

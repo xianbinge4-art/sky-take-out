@@ -1,5 +1,6 @@
 package com.sky.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -417,6 +418,34 @@ public class OrderServiceImpl implements OrderService {
                     .build();
             shoppingCartMapper.insert(shoppingCart);
         }
+    }
+
+    @Override
+    public void reminder(Long id) {
+        // 根据订单id查询订单
+        Orders ordersDB = orderMapper.getEntityById(id);
+        if (ordersDB == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        // 校验订单状态是否为待接单
+        if (!ordersDB.getStatus().equals(Orders.TO_BE_CONFIRMED)) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        // 校验订单归属（必须是当前用户的订单才能催单）
+        Long currentUserId = BaseContext.getCurrentId();
+        if (!ordersDB.getUserId().equals(currentUserId)) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        // 发送催单消息到所有用户
+        Map<String, Object> map = new HashMap<>();
+        map.put("type", "2");
+        map.put("orderId", id);
+        map.put("content", "订单号：" + ordersDB.getNumber());
+        webSocketServer.sendToAllClient(JSON.toJSONString(map));
+
+
+
+
     }
 
 
